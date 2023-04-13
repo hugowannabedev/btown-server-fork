@@ -4,7 +4,7 @@ const { Schema, model } = mongoose;
 const collectionSchema = new Schema(
   {
     title: { type: String, required: [true, "Title is required"] },
-    spot: [{ type: Schema.Types.ObjectId, ref: "Spot" }],
+    spots: [{ type: Schema.Types.ObjectId, ref: "Spot" }],
   },
   {
     timestamps: true,

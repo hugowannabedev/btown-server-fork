@@ -1,4 +1,6 @@
+const express = require("express");
 const router = express.Router();
+const mongoose = require("mongoose");
 
 // CREATE a spot
 router.post("/spots", (req, res, next) => {
@@ -9,4 +11,5 @@ router.post("/spots", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
+module.exports = router;
 //
