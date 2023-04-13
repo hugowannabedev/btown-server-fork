@@ -21,11 +21,11 @@ app.use("/api", indexRoutes);
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
-const collectionRoutes = require("./routes/collection.routes");
-app.use("/auth", collectionRoutes);
+// const collectionRoutes = require("./routes/collection.routes");
+// app.use("/collection", collectionRoutes);
 
-const spotRoutes = require("./routes/spot.routes");
-app.use("/auth", spotRoutes);
+// const spotRoutes = require("./routes/spot.routes");
+// app.use("/spot", spotRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
