@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const Spot = require("../models/Spot.model");
 
 // POST - CREATE a spot
-router.post("/spots", (req, res, next) => {
+router.post("/", (req, res, next) => {
   const { title, description, category, image, userId } = req.body;
 
   Spot.create({ title, description, category, image, userId })
@@ -14,14 +14,14 @@ router.post("/spots", (req, res, next) => {
 });
 
 // GET - DISPLAY all spots
-router.get("/spots", (req, res, next) => {
+router.get("/", (req, res, next) => {
   Spot.find()
     .then((allSpots) => res.json(allSpots))
     .catch((error) => res.json(error));
 });
 
 // GET - DISPLAY a spot
-router.get("/spots/:spotId", (req, res, next) => {
+router.get("/:spotId", (req, res, next) => {
   const { spotId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(spotId)) {
