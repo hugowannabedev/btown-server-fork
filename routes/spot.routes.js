@@ -6,9 +6,9 @@ const Spot = require("../models/Spot.model");
 
 // POST - CREATE a spot
 router.post("/", (req, res, next) => {
-  const { title, description, category, image, userId } = req.body;
+  const { name, description, category, image, userId } = req.body;
 
-  Spot.create({ title, description, category, image, userId })
+  Spot.create({ name, description, category, image, userId })
     .then((spot) => res.json(spot))
     .catch((error) => res.json(error));
 });

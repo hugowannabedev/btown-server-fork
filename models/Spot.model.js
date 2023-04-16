@@ -3,7 +3,7 @@ const { Schema, model } = mongoose;
 
 const spotSchema = new Schema(
   {
-    title: {
+    name: {
       type: String,
       required: [true, "Name is required."],
     },
