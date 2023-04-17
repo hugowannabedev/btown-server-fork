@@ -3,18 +3,20 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const Spot = require("../models/Spot.model");
 const Collection = require("../models/Collection.model");
+const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 // POST - CREATE a collection
-router.post("/collection", (req, res, next) => {
-  const { title, description, spot } = req.body;
+router.post("/", isAuthenticated, (req, res, next) => {
+  const { name, description, spot } = req.body;
+  const userId = req.payload._id
 
-  Collection.create({ title, spot: [] })
+  Collection.create({ name, description, userId, spot })
     .then((response) => res.json(response))
-    .catch((err) => res.json(err));
+    .catch((error) => res.json(error));
 });
 
 // GET - Display a collection
-router.get("/collection/:collectionId", (req, res, next) => {
+router.get("/:collectionId", isAuthenticated, (req, res, next) => {
   const { collectionId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(collectionId)) {
@@ -23,21 +25,21 @@ router.get("/collection/:collectionId", (req, res, next) => {
   }
 
   Collection.findById(collectionId)
-    .populate("spots")
+    .populate("spot")
     .then((collection) => res.status(200).json(collection))
-    .catch((err) => res.json(err));
+    .catch((error) => res.json(error));
 });
 
 // GET - Display all collections
-router.get("collections", (req, res, next) => {
+router.get("/", (req, res, next) => {
   Collection.find()
-    .populate("spots")
+    .populate("spot")
     .then((allCollections) => res.json(allCollections))
-    .catch((err) => res.json(err));
+    .catch((error) => res.json(error));
 });
 
-// DELETE  /api/collections/:collectionId  -  Deletes a specific project by id
-router.delete("/collections/:collectionId", (req, res, next) => {
+// DELETE  /api/collections/:collectionId  -  Deletes a specific collection by id
+router.delete("/:collectionId", (req, res, next) => {
   const { collectionId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(collectiontId)) {
@@ -45,18 +47,18 @@ router.delete("/collections/:collectionId", (req, res, next) => {
     return;
   }
 
-  Spot.findByIdAndRemove(collectionId)
+  Collection.findByIdAndRemove(collectionId)
     .then(() =>
       res.json({
-        message: `The spot with ${collectionId} was successfully removed.`,
+        message: `The collection with ${collectionId} was successfully removed.`,
       })
     )
     .catch((error) => res.json(error));
 });
 
-//UPDATE:/api/collections/:collectionId  -  Update a specific project by id
+//UPDATE:/api/collections/:collectionId  -  Update a specific Collection by id
 
-router.put("/collection/:collectionId", (req, res, next) => {
+router.put("/:collectionId", (req, res, next) => {
   const { collectionId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(collectionId)) {
@@ -64,7 +66,7 @@ router.put("/collection/:collectionId", (req, res, next) => {
     return;
   }
 
-  Collection(collectionId, req.body, { new: true })
+  Collection.findByIdAndUpdate(collectionId, req.body, { new: true })
     .then((updatedCollection) => res.json(updatedCollection))
     .catch((error) => res.json(error));
 });

@@ -3,7 +3,7 @@ const { Schema, model } = mongoose;
 
 const collectionSchema = new Schema(
   {
-    title: {
+    name: {
       type: String,
       required: [true, "Title is required"],
     },
@@ -11,7 +11,7 @@ const collectionSchema = new Schema(
       type: String,
       required: [true, "Description is required."],
     },
-    spots: [{ type: Schema.Types.ObjectId, ref: "Spot" }],
+    spot: [{ type: Schema.Types.ObjectId, ref: "User", required: true }],
   },
   {
     timestamps: true,

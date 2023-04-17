@@ -1,12 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
 const Spot = require("../models/Spot.model");
 
 // POST - CREATE a spot
-router.post("/", (req, res, next) => {
-  const { name, description, category, image, userId } = req.body;
+router.post("/", isAuthenticated, (req, res, next) => {
+  const { name, description, category, image } = req.body;
+  const userId = req.payload._id
 
   Spot.create({ name, description, category, image, userId })
     .then((spot) => res.json(spot))
@@ -21,7 +23,7 @@ router.get("/", (req, res, next) => {
 });
 
 // GET - DISPLAY a spot
-router.get("/:spotId", (req, res, next) => {
+router.get("/:spotId", isAuthenticated, (req, res, next) => {
   const { spotId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(spotId)) {

@@ -27,9 +27,6 @@ app.use("/collection", collectionRoutes);
 const spotRoutes = require("./routes/spot.routes");
 app.use("/spots", spotRoutes);
 
-const myspotsRoutes = require("./routes/myspots.routes");
-app.use("/myspots", myspotsRoutes);
-
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 
