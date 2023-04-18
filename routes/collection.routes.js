@@ -15,7 +15,25 @@ router.post("/", isAuthenticated, (req, res, next) => {
     .catch((error) => res.json(error));
 });
 
-// GET - Display a collection
+// GET - Display all collections of the logged-in user
+router.get("/", (req, res, next) => {
+  Collection.find()
+    .populate("spot")
+    .then((allCollections) => res.json(allCollections))
+    .catch((error) => res.json(error));
+});
+
+/* // GET - Trying to filter the collections by userId
+router.get("/", isAuthenticated, (req, res, next) => {
+  const userId = req.payload._id;
+  Collection.find({userId})
+    .populate("spot")
+    .then((allCollections) => res.json(allCollections))
+    .catch((error) => res.json(error));
+}); */
+
+
+/* // GET - Display a collection
 router.get("/:collectionId", isAuthenticated, (req, res, next) => {
   const { collectionId } = req.params;
 
@@ -30,13 +48,7 @@ router.get("/:collectionId", isAuthenticated, (req, res, next) => {
     .catch((error) => res.json(error));
 });
 
-// GET - Display all collections
-router.get("/", (req, res, next) => {
-  Collection.find()
-    .populate("spot")
-    .then((allCollections) => res.json(allCollections))
-    .catch((error) => res.json(error));
-});
+
 
 // DELETE  /api/collections/:collectionId  -  Deletes a specific collection by id
 router.delete("/:collectionId", (req, res, next) => {
@@ -58,7 +70,7 @@ router.delete("/:collectionId", (req, res, next) => {
 
 //UPDATE:/api/collections/:collectionId  -  Update a specific Collection by id
 
-router.put("/:collectionId", (req, res, next) => {
+router.put("/collection/:collectionId", (req, res, next) => {
   const { collectionId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(collectionId)) {
@@ -69,5 +81,7 @@ router.put("/:collectionId", (req, res, next) => {
   Collection.findByIdAndUpdate(collectionId, req.body, { new: true })
     .then((updatedCollection) => res.json(updatedCollection))
     .catch((error) => res.json(error));
-});
+}); */
+
+
 module.exports = router;
