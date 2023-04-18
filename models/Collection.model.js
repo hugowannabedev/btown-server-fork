@@ -11,7 +11,11 @@ const collectionSchema = new Schema(
       type: String,
       required: [true, "Description is required."],
     },
-    spot: [{ type: Schema.Types.ObjectId, ref: "User", required: true }],
+    userId: { 
+      type: Schema.Types.ObjectId, ref: "User" 
+    },
+    
+    spot: [{ type: Schema.Types.ObjectId, ref: "Spot" }],
   },
   {
     timestamps: true,
