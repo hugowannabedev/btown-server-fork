@@ -20,7 +20,10 @@ const spotSchema = new Schema(
       type: String,
     },
     userId: {
-      type: { type: Schema.Types.ObjectId, ref: "User" },
+      type: Schema.Types.ObjectId, ref: "User"
+    },   
+    spotId: {
+      type: Schema.Types.ObjectId, ref: "Spot"
     },
   },
   {

@@ -23,7 +23,7 @@ router.post("/", isAuthenticated, (req, res, next) => {
  // GET - Display all collections
 router.get("/", isAuthenticated, (req, res, next) => {
   Collection.find({userId: { $nin: req.payload._id }}) // This excludes the logged-in user
-    .populate("spot")
+    .populate("spots")
     .then((allCollections) => res.json(allCollections))
     .catch((error) => res.json(error));
 });
@@ -33,26 +33,37 @@ router.get("/mycollection", isAuthenticated, (req, res, next) => {
   console.log("userId when getting collection page", req.payload._id)
   Collection.find({userId: req.payload._id})
 
-    .populate("spot")
-    .then((allCollections) => {
-      res.json(allCollections)
-      console.log(allCollections)
+    .populate("spots")
+    .then((myCollections) => {
+      res.json(myCollections)
+      console.log(myCollections)
     })
     .catch((error) => res.json(error));
 });
 
+router.put("/:collectionId/:spotId", isAuthenticated, (req, res, next) => {
+  const { collectionId, spotId } = req.params;
 
-/* // GET - Display the details of a collection
+  
+  Collection.updateOne(
+    { _id: collectionId }, { $push: { spots: spotId } }
+  )
+    .then(() => res.status(200).json ({ message: "Spot added" }))
+    .catch((error)  => res.status(500).json(error));
+});
+
+
+  // GET - Display the details of a collection
 router.get("/:collectionId", isAuthenticated, (req, res, next) => {
   const { collectionId } = req.params;
-
+  console.log(collectionId)
   if (!mongoose.Types.ObjectId.isValid(collectionId)) {
     res.status(400).json({ message: "This id is not valid" });
     return;
   }
 
   Collection.findById(collectionId)
-    .populate("spot")
+    .populate("spots")
     .then((collection) => res.status(200).json(collection))
     .catch((error) => res.json(error));
 });
@@ -60,7 +71,7 @@ router.get("/:collectionId", isAuthenticated, (req, res, next) => {
 
 
 // DELETE  /api/collections/:collectionId  -  Deletes a specific collection by id
-router.delete("/:collectionId", (req, res, next) => {
+router.delete("/:collectionId", isAuthenticated, (req, res, next) => {
   const { collectionId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(collectiontId)) {
@@ -79,7 +90,7 @@ router.delete("/:collectionId", (req, res, next) => {
 
 //UPDATE:/api/collections/:collectionId  -  Update a specific Collection by id
 
-router.put("/collection/:collectionId", (req, res, next) => {
+router.put("/:collectionId", isAuthenticated, (req, res, next) => {
   const { collectionId } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(collectionId)) {
@@ -90,7 +101,7 @@ router.put("/collection/:collectionId", (req, res, next) => {
   Collection.findByIdAndUpdate(collectionId, req.body, { new: true })
     .then((updatedCollection) => res.json(updatedCollection))
     .catch((error) => res.json(error));
-}); */
+});
 
 
 module.exports = router;
