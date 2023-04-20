@@ -74,7 +74,7 @@ router.get("/:collectionId", isAuthenticated, (req, res, next) => {
 router.delete("/:collectionId", isAuthenticated, (req, res, next) => {
   const { collectionId } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(collectiontId)) {
+  if (!mongoose.Types.ObjectId.isValid(collectionId)) {
     res.status(400).json({ message: "Specified id is not valid" });
     return;
   }
